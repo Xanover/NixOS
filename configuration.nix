@@ -2,15 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 let
     username = "ashley";
 in
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
+  imports = [ 
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -55,8 +55,97 @@ in
       enable = true;
     };
 
+    programs.waybar = {
+      enable = true;
+    };
+
     programs.anyrun = {
       enable = true;
+
+      config = {
+	x = { fraction = 0.5; };
+	y = { fraction = 0.25; };
+	width = { absolute = 800; };
+	height = { absolute = 1; };
+	layer = "overlay";
+	closeOnClick = true;
+
+	plugins = [
+	  "${pkgs.anyrun}/lib/libapplications.so"
+          "${pkgs.anyrun}/lib/librink.so"
+	  "${pkgs.anyrun}/lib/libshell.so"
+	];
+      };
+
+
+      extraCss = "
+	  window {
+ 	    background: transparent;
+	  }
+
+	  box.main {
+  	    padding: 5px;
+  	    margin: 10px;
+  	    border-radius: 10px;
+  	    border: 2px solid @theme_selected_bg_color;
+  	    background-color: @theme_bg_color;
+  	    box-shadow: 0 0 5px black;
+  	    font-family: \"JetBrainsMonoNL Nerd Font\", monospace;
+  	    font-size: 18px;
+	  }
+
+
+	  text {
+  	    min-height: 30px;
+  	    padding: 5px;
+  	    border-radius: 5px;
+	  }
+
+	  .matches {
+  	    background-color: rgba(0, 0, 0, 0);
+  	    border-radius: 10px;
+	  }
+
+	  box.plugin:first-child {
+  	    margin-top: 5px;
+	  }
+
+	  box.plugin.info {
+  	    min-width: 200px;
+	  }
+
+	  list.plugin {
+  	    background-color: rgba(0, 0, 0, 0);
+	  }
+
+	  label.match.description {
+  	    font-size: 14px;
+	  }
+
+	  label.plugin.info {
+  	    font-size: 14px;
+	  }
+
+	  .match {
+  	    background: transparent;
+	  }
+
+	  .match:selected {
+  	    border-left: 4px solid @theme_selected_bg_color;
+  	    background: transparent;
+  	    animation: fade 0.1s linear;
+	  }
+
+	  @keyframes fade {
+  	    0% {
+    	    opacity: 0;
+  	  }
+
+  	  100% {
+    	    opacity: 1;
+  	  }
+	}
+	";
     };
 
     wayland.windowManager.hyprland = {
@@ -258,6 +347,9 @@ in
 
     home.packages = with pkgs; [
       htop
+      vesktop
+      pavucontrol
+      alsa-utils
     ];
     
     home.stateVersion = "25.05";
@@ -266,6 +358,8 @@ in
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
+
+  programs.zsh.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -309,18 +403,16 @@ in
   users.users.ashley = {
     isNormalUser = true;
     description = "ashley";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" ];
     packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
   firefox
   ];
 
@@ -330,26 +422,35 @@ in
     HYPRCURSOR_SIZE = "24";
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  security.sudo.extraConfig = "
+    Defaults pwfeedback
+  ";
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  security.rtkit.enable = true;
 
   hardware.graphics = {
+    enable = true;
+  };
+
+  services.pulseaudio.enable = false;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
+  systemd.user.services.pipewire-pulse = {
+    enable = true;
+  };
+
+  systemd.user.sockets.pipewire = {
+    enable = true;
+  };
+
+  systemd.user.sockets.pipewire-pulse = {
     enable = true;
   };
 
