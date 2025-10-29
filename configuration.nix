@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 let
     username = "ashley";
@@ -21,9 +21,32 @@ in
 
   home-manager.users.ashley = { pkgs, ... }: {
 
+    # Manage some system component themes without stylix
+    stylix.targets = {
+      hyprland.enable = false;
+      kitty.enable = false;
+      waybar.enable = false;
+    };
+
     programs.zsh = {
       enable = true;
       enableCompletion = true;
+
+      autosuggestion = {
+	enable = true;
+      };
+
+      syntaxHighlighting = {
+	enable = true;
+      };
+
+      oh-my-zsh = {
+	enable = true;
+	plugins = [
+	  "git"
+	  "eza"
+	];
+      };
     };
 
     programs.git = {
@@ -345,11 +368,28 @@ in
     '';
     };
 
+    gtk = {
+      iconTheme = {
+	name = "WhiteSur";
+	package = pkgs.whitesur-icon-theme;
+      };
+    };
+
+    qt = {
+      style = {
+	#name = lib.mkForce "WhiteSur";
+	package = pkgs.whitesur-icon-theme;
+      };
+    };
+
     home.packages = with pkgs; [
-      htop
+      btop
       vesktop
       pavucontrol
       alsa-utils
+      inputs.zen-browser.packages."${system}".default
+      prismlauncher
+      xlsclients
     ];
     
     home.stateVersion = "25.05";
@@ -357,7 +397,15 @@ in
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    twemoji-color-font
   ];
+
+  fonts.fontconfig.defaultFonts = {
+    emoji = [ "Twitter Color Emoji" "Noto Color Emoji" ];
+  };
 
   programs.zsh.enable = true;
 
@@ -408,18 +456,32 @@ in
     shell = pkgs.zsh;
   };
 
+  stylix = {
+    enable = true;
+
+    cursor = {
+      name = "WhiteSur-cursors";
+      package = pkgs.whitesur-cursors;
+      size = 24;
+    };
+
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   firefox
+  whitesur-cursors
   ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     XCURSOR_SIZE = "24";
-    HYPRCURSOR_SIZE = "24";
+    HYPRCURSOR_THEME = "";
+    HYPRCURSOR_SIZE = "";
   };
 
   security.sudo.extraConfig = "

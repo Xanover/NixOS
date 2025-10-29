@@ -15,18 +15,25 @@
       # to have it up-to-date or simply don't specify the nixpkgs input
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, zen-browser, ... }: 
+  outputs = { self, nixpkgs, home-manager, zen-browser, stylix, ... }@inputs: 
     let
       system = "x86_64-linux";
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
 	inherit system;
-	specialArgs = { inherit zen-browser; };
+	specialArgs = { inherit inputs; };
 	modules = [
 	  ./configuration.nix
 	  ./hardware-configuration.nix
+
+	  stylix.nixosModules.stylix
 
 	  home-manager.nixosModules.home-manager
 	  {
