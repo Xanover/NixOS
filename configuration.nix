@@ -28,6 +28,17 @@ in
       waybar.enable = false;
     };
 
+    programs.eza = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    programs.yazi = {
+      enable = true;
+      enableZshIntegration = true;
+      shellWrapperName = "y";
+    };
+
     programs.zsh = {
       enable = true;
       enableCompletion = true;
@@ -38,6 +49,68 @@ in
 
       syntaxHighlighting = {
 	enable = true;
+
+	styles = {
+	 # Comments
+          comment = "fg=#5b6078";
+
+          # Functions / commands
+          alias = "fg=#a6da95";
+          suffix-alias = "fg=#a6da95";
+          global-alias = "fg=#a6da95";
+          function = "fg=#a6da95";
+          command = "fg=#a6da95";
+          precommand = "fg=#a6da95,italic";
+          autodirectory = "fg=#f5a97f,italic";
+          single-hyphen-option = "fg=#f5a97f";
+          double-hyphen-option = "fg=#f5a97f";
+          back-quoted-argument = "fg=#c6a0f6";
+
+          # Builtins / keywords
+          builtin = "fg=#a6da95";
+          reserved-word = "fg=#a6da95";
+          hashed-command = "fg=#a6da95";
+
+          # Punctuation
+          commandseparator = "fg=#ed8796";
+          command-substitution-delimiter = "fg=#cad3f5";
+          command-substitution-delimiter-unquoted = "fg=#cad3f5";
+          process-substitution-delimiter = "fg=#cad3f5";
+          back-quoted-argument-delimiter = "fg=#ed8796";
+          back-double-quoted-argument = "fg=#ed8796";
+          back-dollar-quoted-argument = "fg=#ed8796";
+
+          # Strings
+          command-substitution-quoted = "fg=#eed49f";
+          command-substitution-delimiter-quoted = "fg=#eed49f";
+          single-quoted-argument = "fg=#eed49f";
+          single-quoted-argument-unclosed = "fg=#ee99a0";
+          double-quoted-argument = "fg=#eed49f";
+          double-quoted-argument-unclosed = "fg=#ee99a0";
+          rc-quote = "fg=#eed49f";
+
+          # Variables
+          dollar-quoted-argument = "fg=#cad3f5";
+          dollar-quoted-argument-unclosed = "fg=#ee99a0";
+          dollar-double-quoted-argument = "fg=#cad3f5";
+          assign = "fg=#cad3f5";
+          named-fd = "fg=#cad3f5";
+          numeric-fd = "fg=#cad3f5";
+
+          # Misc
+          unknown-token = "fg=#ee99a0";
+          path = "fg=#cad3f5,underline";
+          path_pathseparator = "fg=#ed8796,underline";
+          path_prefix = "fg=#cad3f5,underline";
+          path_prefix_pathseparator = "fg=#ed8796,underline";
+          globbing = "fg=#cad3f5";
+          history-expansion = "fg=#c6a0f6";
+          back-quoted-argument-unclosed = "fg=#ee99a0";
+          redirection = "fg=#cad3f5";
+          arg0 = "fg=#cad3f5";
+          default = "fg=#cad3f5";
+          cursor = "fg=#cad3f5"; 
+	};
       };
 
       oh-my-zsh = {
@@ -47,6 +120,236 @@ in
 	  "eza"
 	];
       };
+    };
+
+    programs.oh-my-posh = {
+      enable = true;
+      enableZshIntegration = true;
+
+      settings = builtins.fromJSON ''
+        {
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#575656",
+          "foreground": "#FFFFFF",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "properties": {
+            "alma": "\uF31D ALMA",
+            "almalinux": "\uF31D ALML",
+            "almalinux9": "\uF31D ALL9",
+            "alpine": "\uF300 ALPN",
+            "android": "\uF17b ANDR",
+            "aosc": "\uF301 AOSC",
+            "arch": "\uF303 ARCH",
+            "centos": "\uF304 CENT",
+            "coreos": "\uF305 CORE",
+            "debian": "\uF306 DEBN",
+            "deepin": "\uF321 DEEP",
+            "devuan": "\uF307 DEVN",
+            "elementary": "\uF309 ELMT",
+            "endeavouros": "\uF322 EDOS",
+            "fedora": "\uF30a FEDR",
+            "gentoo": "\uF30d GENT",
+            "mageia": "\uF310 MAGE",
+            "manjaro": "\uF312 MANJ",
+            "mint": "\uF30e MINT",
+            "nixos": "\uF313 NIXS",
+            "opensuse": "\uF314 SUSE",
+            "opensuse-tumbleweed": "\uF314 SSTW",
+            "raspbian": "\uF315 RASP",
+            "redhat": "\uF316 RDHT",
+            "rocky": "\uF32B ROCK",
+            "sabayon": "\uF317 SBYO",
+            "slackware": "\uF319 SLCK",
+            "ubuntu": "\uF31b UBNT"
+          },
+          "template": "<b>\udb82\udee2  {{ .UserName }} </b>",
+          "type": "os"
+        },
+        {
+          "background": "#a6da95",
+          "background_templates": [
+            "{{ if gt .Code 0 }}#ED8796{{ end }}"
+          ],
+          "foreground": "#000000",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}#FFFFFF{{ end }}"
+          ],
+          "leading_diamond": "\ue0b2",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "diamond",
+          "template": "{{ if gt .Code 0 }}\uf00d{{ else }}\uf00c{{ end }}",
+          "type": "status",
+          "trailing_diamond": "\ue0b0"
+        },
+        {
+          "background": "#575656",
+          "foreground": "#FFFFFF",
+          "properties": {
+            "style": "roundrock",
+            "threshold": 0
+          },
+          "style": "diamond",
+          "template": " \uf252 {{ .FormattedMs }}",
+          "trailing_diamond": "\ue0b0",
+          "type": "executiontime"
+        },
+        {
+          "background": "#F46C6B",
+          "foreground": "#000000",
+          "powerline_symbol": "\ue0b0",
+          "style": "powerline",
+          "template": "<b> \uf09c root </b>",
+          "type": "root"
+        },
+        {
+          "type": "cmake",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "foreground": "#E8EAEE",
+          "background": "#1E9748",
+          "template": " \ue61e \ue61d cmake {{ .Full }} "
+        },
+        {
+          "type": "python",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "display_mode": "context"
+          },
+          "foreground": "#000000",
+          "foreground_templates": [
+            "{{ if .Venv }}#FFFFFF{{ end }}"
+          ],
+          "background": "#EBFF3B",
+          "background_templates": [
+            "{{ if .Venv}}#356C9C{{ end }}"
+          ],
+          "template": " <b>\ue73c {{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}</b> "
+        },
+        {
+          "type": "go",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "foreground": "#000000",
+          "background": "#7FD5EA",
+          "template": " \u202d\ue626 {{ .Full }} "
+        },
+        {
+          "type": "rust",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "foreground": "#e2f3ff",
+          "background": "#684e3d",
+          "template": " \ue7a8 {{ .Full }} "
+        },
+        {
+          "background": "#D53010",
+          "foreground": "#FFFFFF",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "branch_icon": " ",
+            "fetch_stash_count": true,
+            "fetch_status": true,
+            "fetch_upstream_icon": true,
+            "fetch_worktree_count": true
+          },
+          "style": "powerline",
+          "template": "<b> {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}<#CAEBE1> \uf046 {{ .Staging.String }}</>{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} </b>",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "type": "prompt",
+      "segments": [
+        {
+          "foreground": "#D6DEEB",
+          "style": "plain",
+          "template": "\u256d\u2500",
+          "type": "text"
+        },
+        {
+          "leading_diamond": "",
+          "properties": {
+            "folder_icon": " \uf07c ",
+            "folder_separator_icon": " <#D6DEEB>\uf061</> ",
+            "home_icon": "\uf015 ",
+            "style": "agnoster_short",
+            "max_depth": 4,
+            "right_format": "<u><b>%s</b></u>",
+            "mapped_locations": {
+              "~/videos": "\uf015 <#D6DEEB>\uf061</> \uf03d",
+              "~/desktop": "\uf015 <#D6DEEB>\uf061</> \uf108",
+              "~/documents": "\uf015 <#D6DEEB>\uf061</> \udb80\ude19",
+              "~/downloads": "\uf015 <#D6DEEB>\uf061</> \uf019",
+              "~/pictures": "\uf015 <#D6DEEB>\uf061</> \uf03e",
+              "~/music": "\uf015 <#D6DEEB>\uf061</> \uf001",
+              "~/git": "\uf015 <#D6DEEB>\uf061</> \ue702",
+              "~/public": "\uf015 <#D6DEEB>\uf061</> \uf0c0",
+              "~/templates": "\uf015 <#D6DEEB>\uf061</> \uf509",
+              "~/wine": "\uf015 <#D6DEEB>\uf061</> \uedae",
+              "~/workdir": "\uf015 <#D6DEEB>\uf061</> \uedc8 ",
+              "~/.config": "\uf015 <#D6DEEB>\uf061</> \udb84\udc7f",
+              "~/.local": "\uf015 <#D6DEEB>\uf061</> \udb86\uddfc",
+              "~/.steam": "\uf015 <#D6DEEB>\uf061</> \ued29",
+              "~/.cache": "\uf015 <#D6DEEB>\uf061</> \udb82\udeba",
+              "~/games": "\uf015 <#D6DEEB>\uf061</> \uf11b "
+            }
+          },
+          "style": "diamond",
+          "template": "  <#fcffff>{{ if not .Writable }}<#FF4444>\uf09c {{ end }}{{ if .RootDir }}\ue216{{ else }}{{ .Path }}{{ end }}</> ",
+          "type": "path"
+        }
+      ]
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#D6DEEB",
+          "style": "plain",
+          "template": "\u2570\u2500",
+          "type": "text"
+        },
+        {
+          "foreground": "#D6DEEB",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "plain",
+          "template": "\uedfb ",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "osc99": true,
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "#FEF5ED",
+    "template": "\ue285 "
+  },
+  "secondary_prompt": {
+    "background": "transparent",
+    "foreground": "#D6DEEB",
+    "template": "\u2570\u2500\u276f "
+  },
+  "version": 3
+}
+      '';
     };
 
     programs.git = {
@@ -80,6 +383,393 @@ in
 
     programs.waybar = {
       enable = true;
+
+      settings = {
+	mainBar = {
+	  position = "top";
+	  layer = "top";
+	  height = 16;
+	  margin-top = 0;
+	  margin-bottom = 0;
+	  margin-left = 0;
+	  margin-right = 0;
+
+	  modules-left = [
+	    "custom/launcher"
+	    "hyprland/workspaces"
+	    "custom/playerctl"
+	    "custom/playerlabel"
+	  ];
+
+	  modules-center = [ "hyprland/window" ];
+
+	  modules-right = [
+	    "tray"
+            "custom/hyprpicker"
+            "cpu"
+            "memory"
+            "pulseaudio#input"
+            "pulseaudio"
+            "clock"
+	  ];
+
+	  clock = {
+            format = " {:%H:%M}";
+            tooltip = true;
+            tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+            format-alt = " {:%d/%m}";
+          };
+
+	  "hyprland/window" = {
+            max-length = 120;
+          };
+
+	  "hyprland/workspaces" = {
+            active-only = false;
+            all-outputs = true;
+            disable-scroll = false;
+            on-scroll-up = "hyprctl dispatch workspace -1";
+            on-scroll-down = "hyprctl dispatch workspace +1";
+            format = "{icon}";
+            on-click = "activate";
+            format-icons = {
+              urgent = "";
+              active = "";
+              default = "󰧞";
+            };
+            sort-by-number = true;
+          };
+
+	  "custom/playerctl" = {
+            format = "{icon}";
+            return-type = "json";
+            max-length = 64;
+            exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
+            on-click-middle = "playerctl previous";
+            on-click = "playerctl play-pause";
+            on-click-right = "playerctl next";
+            format-icons = {
+              Playing = "<span foreground='#E5B9C6'>  </span>";
+              Paused = "<span foreground='#928374'>  </span>";
+            };
+          };
+
+	  "custom/playerlabel" = {
+            format = "<span>{}</span>";
+            return-type = "json";
+            max-length = 48;
+            exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
+            on-click-middle = "playerctl play-pause";
+            on-click = "playerctl previous";
+            on-click-right = "playerctl next";
+            format-icons = {
+              Playing = "<span foreground='#E5B9C6'>  </span>";
+              Paused = "<span foreground='#928374'>  </span>";
+            };
+          };
+
+	  memory = {
+            format = "󰍛 {}%";
+            format-alt = " {used}/{total} GiB";
+            interval = 5;
+          };
+
+          cpu = {
+            format = "󰻠 {usage}%";
+            format-alt = " {avg_frequency} GHz";
+            interval = 5;
+          };
+
+	  tray = {
+            icon-size = 16;
+            spacing = 5;
+          };
+
+	  pulseaudio = {
+            format = "{icon} {volume}%";
+            format-muted = "󰝟";
+            format-icons.default = [ "󰕿" "󰖀" "󰕾" ];
+            on-click = "hyprctl dispatch exec '[float; size 1000 500]' pavucontrol";
+            scroll-step = 5;
+            on-click-right = "pavucontrol";
+          };
+
+	  "pulseaudio#input" = {
+            format-source = " {volume}%";
+            format-source-muted = "  off";
+            format = "{format_source}";
+            scroll-step = 1;
+            smooth-scrolling-threshold = 1;
+            on-click = "amixer sset 'Capture' toggle";
+            on-click-middle = "pavucontrol";
+            on-scroll-up = "amixer sset 'Capture' 2%+";
+            on-scroll-down = "amixer sset 'Capture' 2%-";
+          };
+
+	  "custom/launcher" = {
+            format = "󱄅";
+            on-click = "bash $HOME/.config/waybar/run.sh wofi";
+            on-click-right = "bash $HOME/.config/waybar/run.sh kitty";
+          };
+
+	  "custom/hyprpicker" = {
+            format = "";
+            on-click = "hyprpicker -a -f hex";
+            on-click-right = "hyprpicker -a -f rgb";
+          };
+
+	};	
+      };
+
+      style = ''
+	* {
+    border: none;
+    border-radius: 0px;
+    /*font-family: VictorMono, Iosevka Nerd Font, Noto Sans CJK;*/
+    /*font-family: Iosevka, FontAwesome, Noto Sans CJK;*/
+    font-family: JetBrainsMono Nerd Font, Noto Sans CJK;
+    font-size: 14px;
+    font-style: normal;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(30, 30, 46, 0.9);
+    border-bottom: 1px solid #282828;
+    color: #f4d9e1
+}
+
+#workspaces {
+	background: #282828;
+	margin: 5px 5px 5px 5px;
+  padding: 0px 5px 0px 5px;
+	border-radius: 16px;
+  border: solid 0px #f4d9e1;
+  font-weight: normal;
+  font-style: normal;
+}
+#workspaces button {
+    padding: 0px 5px;
+    border-radius: 16px;
+    color: #928374;
+}
+
+#workspaces button.active {
+    color: #f4d9e1;
+    background-color: transparent;
+    border-radius: 16px;
+}
+
+#workspaces button:hover {
+	background-color: #E6B9C6;
+	color: black;
+	border-radius: 16px;
+}
+
+#custom-date, #clock, #battery, #pulseaudio, #network, #custom-randwall, #custom-launcher {
+	background: transparent;
+	padding: 5px 5px 5px 5px;
+	margin: 5px 5px 5px 5px;
+  border-radius: 8px;
+  border: solid 0px #f4d9e1;
+}
+
+#custom-date {
+	color: #D3869B;
+}
+
+#custom-power {
+	color: #24283b;
+	background-color: #db4b4b;
+	border-radius: 5px;
+	margin-right: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 0px;
+	padding: 5px 10px;
+}
+
+#tray {
+    background: #282828;
+    margin: 5px 5px 5px 5px;
+    border-radius: 16px;
+    padding: 0px 5px;
+    /*border-right: solid 1px #282738;*/
+}
+
+#clock {
+    color: #E6B9C6;
+    background-color: #282828;
+    border-radius: 0px 0px 0px 24px;
+    padding-left: 13px;
+    padding-right: 15px;
+    margin-right: 0px;
+    margin-left: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    /*border-left: solid 1px #282738;*/
+}
+
+
+#battery {
+    color: #9ece6a;
+}
+
+#battery.charging {
+    color: #9ece6a;
+}
+
+#battery.warning:not(.charging) {
+    background-color: #f7768e;
+    color: #24283b;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#backlight {
+    background-color: #24283b;
+    color: #db4b4b;
+    border-radius: 0px 0px 0px 0px;
+    margin: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px 0px;
+}
+
+#network {
+    color: #f4d9e1;
+    border-radius: 8px;
+    margin-right: 5px;
+}
+
+#pulseaudio {
+    color: #f4d9e1;
+    border-radius: 8px;
+    margin-left: 0px;
+}
+
+#pulseaudio.muted {
+    background: transparent;
+    color: #928374;
+    border-radius: 8px;
+    margin-left: 0px;
+}
+
+#custom-randwall {
+    color: #f4d9e1;
+    border-radius: 8px;
+    margin-right: 0px;
+}
+
+#custom-launcher {
+    color: #E6B9C6;
+    background-color: #282828;
+    border-radius: 0px 0px 24px 0px;
+    margin: 0px 0px 0px 0px;
+    padding: 0 20px 0 13px;
+    /*border-right: solid 1px #282738;*/
+    font-size: 20px;
+}
+
+#custom-launcher button:hover {
+    background-color: #FB4934;
+    color: transparent;
+    border-radius: 8px;
+    margin-right: -5px;
+    margin-left: 10px;
+}
+
+#custom-playerctl {
+	background: #282828;
+	padding-left: 15px;
+  padding-right: 14px;
+	border-radius: 16px;
+  /*border-left: solid 1px #282738;*/
+  /*border-right: solid 1px #282738;*/
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 16px;
+}
+
+#custom-playerlabel {
+    background: transparent;
+    padding-left: 10px;
+    padding-right: 15px;
+    border-radius: 16px;
+    /*border-left: solid 1px #282738;*/
+    /*border-right: solid 1px #282738;*/
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+#window {
+    background: #282828;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 16px;
+    /*border-left: solid 1px #282738;*/
+    /*border-right: solid 1px #282738;*/
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+#custom-wf-recorder {
+    padding: 0 20px;
+    color: #e5809e;
+    background-color: #1E1E2E;
+}
+
+#cpu {
+    background-color: #282828;
+    /*color: #FABD2D;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#memory {
+    background-color: #282828;
+    /*color: #83A598;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#disk {
+    background-color: #282828;
+    /*color: #8EC07C;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 10px 0px 10px;
+    font-weight: bold;
+}
+
+#custom-hyprpicker {
+    background-color: #282828;
+    /*color: #8EC07C;*/
+    border-radius: 16px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 11px 0px 9px;
+    font-weight: bold;
+}
+      '';
     };
 
     programs.anyrun = {
@@ -175,6 +865,10 @@ in
       enable = true;
 
       settings = {
+	exec-once = [
+	  "waybar"
+	];
+
         monitor = [
           "DP-3, 2560x1440@144, 1920x0, 1.25" 
           "DP-2, 1920x1080@60, 0x0, 1"
@@ -464,6 +1158,8 @@ in
       package = pkgs.whitesur-cursors;
       size = 24;
     };
+
+    image = ./modules/wallpapers/clouds.jpg;
 
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
   };
