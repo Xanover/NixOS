@@ -1062,6 +1062,15 @@ window#waybar {
     '';
     };
 
+    services.nextcloud-client = {
+      enable = true;
+    };
+
+    services.mpd = {
+      enable = true;
+      musicDirectory = "/home/ashley/Nextcloud/music";
+    };
+
     gtk = {
       iconTheme = {
 	name = "WhiteSur";
@@ -1084,6 +1093,7 @@ window#waybar {
       inputs.zen-browser.packages."${system}".default
       prismlauncher
       xlsclients
+      rmpc
     ];
     
     home.stateVersion = "25.05";
@@ -1159,8 +1169,6 @@ window#waybar {
       size = 24;
     };
 
-    image = ./modules/wallpapers/clouds.jpg;
-
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
   };
 
@@ -1171,12 +1179,12 @@ window#waybar {
   environment.systemPackages = with pkgs; [
   firefox
   whitesur-cursors
+  hyprshot
   ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     XCURSOR_SIZE = "24";
-    HYPRCURSOR_THEME = "";
     HYPRCURSOR_SIZE = "";
   };
 
@@ -1198,6 +1206,13 @@ window#waybar {
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
+    wireplumber.enable = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    config.common.default = "*";
   };
 
   systemd.user.services.pipewire-pulse = {
