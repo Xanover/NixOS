@@ -20,9 +20,13 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    swww = {
+      url = "github:LGFae/swww";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, zen-browser, stylix, ... }@inputs: 
+  outputs = { self, nixpkgs, home-manager, zen-browser, stylix, swww, ... }@inputs: 
     let
       system = "x86_64-linux";
     in {

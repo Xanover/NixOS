@@ -21,6 +21,173 @@ in
 
   home-manager.users.ashley = { pkgs, ... }: {
 
+    # Symlink the config file
+    #xdg.configFile."rmpc/config.ron".source = ./modules/entertainment/rmpc/config.ron;
+
+    # Symlink the entire theme folder
+    #home.file."config/rmpc/themes".source = ./modules/entertainment/rmpc/themes;
+
+    programs.rmpc = {
+      enable = true;
+
+      config = ''
+(
+    address: "127.0.0.1:6600",
+    //address: "/run/user/1000/mpd/socket",
+    password: None,
+    //theme: "silly",
+    //cache_dir: "/home/ashley/Documents/rmpccache",
+    on_song_change: None,
+    volume_step: 5,
+    max_fps: 30,
+    scrolloff: 0,
+    wrap_navigation: false,
+    enable_mouse: true,
+    enable_config_hot_reload: true,
+    status_update_interval_ms: 1000,
+    rewind_to_start_sec: None,
+    reflect_changes_to_playlist: false,
+    select_current_song_on_change: false,
+    browser_song_sort: [Artist, Title, Track, Disc],
+    directories_sort: SortFormat(group_by_type: true, reverse: false),
+    album_art: (
+        method: Auto,
+        max_size_px: (width: 1200, height: 1200),
+        disabled_protocols: ["http://", "https://"],
+        vertical_align: Center,
+        horizontal_align: Center,
+    ),
+    keybinds: (
+        global: {
+            ":":       CommandMode,
+            ",":       VolumeDown,
+            "s":       Stop,
+            ".":       VolumeUp,
+            "<Tab>":   NextTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Directories"),
+            "3":       SwitchToTab("Artists"),
+            "4":       SwitchToTab("Album Artists"),
+            "5":       SwitchToTab("Albums"),
+            "6":       SwitchToTab("Playlists"),
+            "7":       SwitchToTab("Search"),
+            "q":       Quit,
+            ">":       NextTrack,
+            "p":       TogglePause,
+            "<":       PreviousTrack,
+            "f":       SeekForward,
+            "z":       ToggleRepeat,
+            "x":       ToggleRandom,
+            "c":       ToggleConsume,
+            "v":       ToggleSingle,
+            "b":       SeekBack,
+            "~":       ShowHelp,
+            "u":       Update,
+            "U":       Rescan,
+            "I":       ShowCurrentSongInfo,
+            "O":       ShowOutputs,
+            "P":       ShowDecoders,
+            "R":       AddRandom,
+        },
+        navigation: {
+            "k":         Up,
+            "j":         Down,
+            "h":         Left,
+            "l":         Right,
+            "<Up>":      Up,
+            "<Down>":    Down,
+            "<Left>":    Left,
+            "<Right>":   Right,
+            "<C-k>":     PaneUp,
+            "<C-j>":     PaneDown,
+            "<C-h>":     PaneLeft,
+            "<C-l>":     PaneRight,
+            "<C-u>":     UpHalf,
+            "N":         PreviousResult,
+            "a":         Add,
+            "A":         AddAll,
+            "r":         Rename,
+            "n":         NextResult,
+            "g":         Top,
+            "<Space>":   Select,
+            "<C-Space>": InvertSelection,
+            "G":         Bottom,
+            "<CR>":      Confirm,
+            "i":         FocusInput,
+            "J":         MoveDown,
+            "<C-d>":     DownHalf,
+            "/":         EnterSearch,
+            "<C-c>":     Close,
+            "<Esc>":     Close,
+            "K":         MoveUp,
+            "D":         Delete,
+            "B":         ShowInfo,
+        },
+        queue: {
+            "D":       DeleteAll,
+            "<CR>":    Play,
+            "<C-s>":   Save,
+            "a":       AddToPlaylist,
+            "d":       Delete,
+            "C":       JumpToCurrent,
+            "X":       Shuffle,
+        },
+    ),
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+            (value: "filename",    label: "Filename"),
+            (value: "genre",       label: "Genre"),
+        ],
+    ),
+    artists: (
+        album_display_mode: SplitByDate,
+        album_sort_by: Date,
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            pane: Split(
+                direction: Horizontal,
+                panes: [(size: "40%", pane: Pane(AlbumArt)), (size: "60%", pane: Pane(Queue))],
+            ),
+        ),
+        (
+            name: "Directories",
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Artists",
+            pane: Pane(Artists),
+        ),
+        (
+            name: "Album Artists",
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Albums",
+            pane: Pane(Albums),
+        ),
+        (
+            name: "Playlists",
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            pane: Pane(Search),
+        ),
+    ],
+)
+      '';
+    };
+
     # Manage some system component themes without stylix
     stylix.targets = {
       hyprland.enable = false;
@@ -449,8 +616,8 @@ in
             on-click = "playerctl play-pause";
             on-click-right = "playerctl next";
             format-icons = {
-              Playing = "<span foreground='#E5B9C6'>  </span>";
-              Paused = "<span foreground='#928374'>  </span>";
+              Playing = "<span foreground='#E5B9C6'>󰒮 󰐌 󰒭</span>";
+              Paused = "<span foreground='#928374'>󰒮 󰏥 󰒭</span>";
             };
           };
 
@@ -867,6 +1034,7 @@ window#waybar {
       settings = {
 	exec-once = [
 	  "waybar"
+	  "swww-daemon"
 	];
 
         monitor = [
@@ -1009,6 +1177,13 @@ window#waybar {
 	  ",XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
 	];
 
+	bindl = [
+	  ",XF86AudioNext, exec, playerctl next"
+	  ",XF86AudioPause, exec, playerctl play-pause"
+	  ",XF86AudioPlay, exec, playerctl play-pause"
+	  ",XF86AudioPrev, exec, playerctl previous"
+	];
+
 	xwayland = {
 	  force_zero_scaling = true;
 	};
@@ -1062,6 +1237,10 @@ window#waybar {
     '';
     };
 
+    services.swww = {
+      enable = true;
+    };
+
     services.nextcloud-client = {
       enable = true;
     };
@@ -1069,7 +1248,18 @@ window#waybar {
     services.mpd = {
       enable = true;
       musicDirectory = "/home/ashley/Nextcloud/music";
+
+      extraConfig = ''
+        auto_update "yes"
+
+	audio_output {
+        type "pulse"
+        name "mraow"
+      }
+      '';
     };
+
+    services.mpd-mpris.enable = true;
 
     gtk = {
       iconTheme = {
@@ -1093,7 +1283,7 @@ window#waybar {
       inputs.zen-browser.packages."${system}".default
       prismlauncher
       xlsclients
-      rmpc
+      #rmpc
     ];
     
     home.stateVersion = "25.05";
@@ -1180,6 +1370,7 @@ window#waybar {
   firefox
   whitesur-cursors
   hyprshot
+  playerctl
   ];
 
   environment.sessionVariables = {
@@ -1211,7 +1402,7 @@ window#waybar {
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk ];
     config.common.default = "*";
   };
 

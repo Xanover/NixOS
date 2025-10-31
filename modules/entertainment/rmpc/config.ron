@@ -2,11 +2,11 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
-    // address: "127.0.0.1:6600",
-    address: "/run/user/1000/mpd/socket",
+    address: "127.0.0.1:6600",
+    //address: "/run/user/1000/mpd/socket",
     password: None,
     theme: "silly",
-    cache_dir: "/home/ashley/Documents/rmpccache",
+    //cache_dir: "/home/ashley/Documents/rmpccache",
     on_song_change: None,
     volume_step: 5,
     max_fps: 30,
